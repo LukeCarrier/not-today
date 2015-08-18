@@ -1,0 +1,17 @@
+#!/bin/sh
+# Quickly open Gnome Terminal tabs
+
+open_tab() {
+    window="$(xdotool search --class gnome-terminal | head -1)"
+    xdotool windowfocus $window
+    xdotool key ctrl+shift+t
+    sleep 0.5
+    xdotool type "$*"
+    xdotool key Return
+}
+
+for file in "$@"; do
+    while read line; do
+        open_tab "cd $(pwd); ${line}"
+    done <"$file"
+done
